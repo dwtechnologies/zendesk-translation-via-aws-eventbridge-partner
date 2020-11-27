@@ -1,0 +1,104 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Zendesk Translator
+
+  Template for Zendesk Translator lambda
+
+
+Parameters:
+  Environment:
+    Type: String
+  DebugParam:
+    Type: String
+  ZendeskKeySSMParameterPath:
+    Type: String
+  ZendeskUsernameMail:
+    Type: String
+  ZendeskSubdomain:
+    Type: String
+  ZendeskTicketLangFieldId:
+    Type: String
+  KmsKeyId:
+    Type: String
+  EventBusName:
+    Type: String
+    AllowedPattern: aws\.partner(/[\.\-_A-Za-z0-9]+){2,}
+    MinLength: 1
+    MaxLength: 256
+    Description: Name of the Amazon EventBridge Zendesk Event Source to associate with an Event Bus. For example, aws.partner/zendesk.com/123456/default
+
+Resources:
+  ZendeskEventBus:
+    Type: AWS::Events::EventBus
+    Properties:
+      EventSourceName: !Ref EventBusName
+      Name: !Ref EventBusName
+
+
+
+  EBZendeskTrans:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub zendesktransl-${Environment}
+      CodeUri: lambda/
+      Handler: app.lambdaHandler
+      Runtime: nodejs12.x
+      Timeout: 10
+      Environment:
+        Variables:
+          DEBUG: !Ref DebugParam
+          ZENDESK_ACCESS_TOKEN_PARAM_KEY: !Ref ZendeskKeySSMParameterPath
+          ZENDESK_SUBDOMAIN: !Ref ZendeskSubdomain
+          ZENDESK_EMAIL: !Ref ZendeskUsernameMail
+          ZENDESK_TICKET_LANG_FIELD_ID: !Ref ZendeskTicketLangFieldId
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Sid: AWStranslate
+              Effect: Allow
+              Action:
+              - comprehend:DetectDominantLanguage
+              - translate:TranslateText
+              Resource: '*'
+            - Sid: AWSssmParameterStore
+              Effect: Allow
+              Action:
+              - ssm:GetParameter
+              Resource:
+              - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/config/zendesk-translation/*"
+            - Sid: KmsDecryptZendesKey
+              Effect: "Allow"
+              Action:
+              - kms:Decrypt
+              Resource:
+              - !Sub "arn:${AWS::Partition}:kms:${AWS::Region}:${AWS::AccountId}:key/${KmsKeyId}"
+      Events:
+        IntNote:
+          Type: EventBridgeRule
+          Properties:
+            EventBusName: !GetAtt ZendeskEventBus.Name
+            Pattern: {"detail-type":["Support Ticket: Comment Created"],"detail":{"ticket_event":{"type":["Comment Created"],"comment":{"is_public":[false],"author":{"is_staff":[true]}},"ticket":{"via":{"channel":["email","web"]}}}}}
+            #Pattern: {"detail-type":["Support Ticket: Comment Created"],"detail":{"ticket_event":{"type":["Comment Created"],"comment":{"is_public":[false],"author":{"is_staff":[true]},"body":{"prefix":["#translate"]}},"ticket":{"via":{"channel":["email","web"]}}}}}
+
+        PubNote:
+          Type: EventBridgeRule
+          Properties:
+            EventBusName: !GetAtt ZendeskEventBus.Name
+            Pattern: {"detail-type":["Support Ticket: Comment Created"],"detail":{"ticket_event":{"type":["Comment Created"],"comment":{"is_public":[true],"author":{"is_staff":[false]}},"ticket":{"via":{"channel":["email","web"]}}}}}
+
+
+  ZendeskTranslatorLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/eb-zendesk-trans-${Environment}
+      RetentionInDays: 5
+
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  EBZendeskTrans:
+    Description: "Zendesk Translator lambda ARN"
+    Value: !GetAtt EBZendeskTrans.Arn

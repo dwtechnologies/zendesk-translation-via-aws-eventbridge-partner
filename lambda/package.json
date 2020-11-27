@@ -1,0 +1,11 @@
+{
+  "name": "zendesk_translator",
+  "version": "1.0.0",
+  "description": "Zendesk Translator Lambda",
+  "main": "index.js",
+  "author": "Roman Domrachev",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "is-english": "1.3.0"
+  }
+}
