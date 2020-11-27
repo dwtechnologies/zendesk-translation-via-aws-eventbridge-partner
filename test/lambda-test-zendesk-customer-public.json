@@ -1,0 +1,58 @@
+{
+    "version": "0",
+    "id": "xxxx-xxxx-xxxxxx",
+    "detail-type": "Support Ticket: Comment Created",
+    "source": "aws.partner/zendesk.com/00000/default",
+    "account": "1234567890123",
+    "time": "2020-05-24T14:51:32Z",
+    "region": "eu-west-1",
+    "resources": [
+        "Support Ticket"
+    ],
+    "detail": {
+        "ticket_event": {
+            "meta": {
+                "version": "1.0",
+                "occurred_at": "2020051-24T14:51:29Z",
+                "ref": "9-478287666",
+                "sequence": {
+                    "id": "DEADBEEF00000000000000000",
+                    "position": 2,
+                    "total": 9
+                },
+                "actor_id": 00000001
+            },
+            "type": "Comment Created",
+            "comment": {
+                "id": 18723878713,
+                "body": "Testar igen hej hej, funkar detta?",
+                "is_public": true,
+                "author": {
+                    "id": 123123123,
+                    "name": "lezgin bakircioglu",
+                    "is_staff": false
+                }
+            },
+            "ticket": {
+                "id": 1337,
+                "created_at": "2020-05-24T14:51:29Z",
+                "updated_at": "2020-05-24T14:51:29Z",
+                "type": null,
+                "priority": null,
+                "status": "new",
+                "requester_id": 000000000009,
+                "submitter_id": 000000000009,
+                "assignee_id": null,
+                "organization_id": null,
+                "group_id": 1231231,
+                "brand_id": 2342342342,
+                "form_id": 3532453253,
+                "external_id": null,
+                "tags": [],
+                "via": {
+                    "channel": "email"
+                }
+            }
+        }
+    }
+}

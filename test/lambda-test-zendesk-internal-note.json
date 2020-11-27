@@ -1,0 +1,60 @@
+{
+    "version": "0",
+    "id": "xxxx-xxxxx-xxxxx-xxx",
+    "detail-type": "Support Ticket: Comment Created",
+    "source": "aws.partner/zendesk.com/0000000/default",
+    "account": "1234567890123",
+    "time": "2020-05-24T14:58:58Z",
+    "region": "eu-west-1",
+    "resources": [
+        "Support Ticket"
+    ],
+    "detail": {
+        "ticket_event": {
+            "meta": {
+                "version": "1.0",
+                "occurred_at": "2020-05-24T14:58:57Z",
+                "ref": "9-40000000",
+                "sequence": {
+                    "id": "DEADBEEF00000000000000",
+                    "position": 1,
+                    "total": 1
+                },
+                "actor_id": 000000001
+            },
+            "type": "Comment Created",
+            "comment": {
+                "id": 123412341234,
+                "body": "#translate\nYes it works",
+                "is_public": false,
+                "author": {
+                    "id": 234523452345,
+                    "name": "Staff Lezgin Bakircioglu",
+                    "is_staff": true
+                }
+            },
+            "ticket": {
+                "id": 1337,
+                "created_at": "2020-05-24T14:51:29Z",
+                "updated_at": "2020-05-24T14:58:57Z",
+                "type": null,
+                "priority": null,
+                "status": "new",
+                "requester_id": 00000000009,
+                "submitter_id": 00000000009,
+                "assignee_id": null,
+                "organization_id": null,
+                "group_id": 1231231,
+                "brand_id": 4234234,
+                "form_id": 21342412,
+                "external_id": null,
+                "tags": [
+                    "lang-sv"
+                ],
+                "via": {
+                    "channel": "email"
+                }
+            }
+        }
+    }
+}
