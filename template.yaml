@@ -3,7 +3,7 @@ Transform: AWS::Serverless-2016-10-31
 Description: >
   Zendesk Translator
 
-  Template for Zendesk Translator lambda
+  Zendesk Translator lambda via partner eventbridge
 
 
 Parameters:
@@ -28,19 +28,19 @@ Parameters:
     MaxLength: 256
     Description: Name of the Amazon EventBridge Zendesk Event Source to associate with an Event Bus. For example, aws.partner/zendesk.com/123456/default
 
+#Manual step needs to be done before this can be run and that is to setup the eventbridge in the console of AWS Eventbridge (and follow instructions on zendesk side)
 Resources:
   ZendeskEventBus:
     Type: AWS::Events::EventBus
     Properties:
-      EventSourceName: !Ref EventBusName
       Name: !Ref EventBusName
+      EventSourceName: !Ref EventBusName
 
-
-
-  EBZendeskTrans:
+      
+  EBZendeskTranslate:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub zendesktransl-${Environment}
+      FunctionName: !Sub eb-zendesk-translate-${Environment}
       CodeUri: lambda/
       Handler: app.lambdaHandler
       Runtime: nodejs12.x
@@ -73,25 +73,63 @@ Resources:
               - kms:Decrypt
               Resource:
               - !Sub "arn:${AWS::Partition}:kms:${AWS::Region}:${AWS::AccountId}:key/${KmsKeyId}"
-      Events:
-        IntNote:
+
+      Events:        
+        InternalNote:
           Type: EventBridgeRule
           Properties:
-            EventBusName: !GetAtt ZendeskEventBus.Name
-            Pattern: {"detail-type":["Support Ticket: Comment Created"],"detail":{"ticket_event":{"type":["Comment Created"],"comment":{"is_public":[false],"author":{"is_staff":[true]}},"ticket":{"via":{"channel":["email","web"]}}}}}
-            #Pattern: {"detail-type":["Support Ticket: Comment Created"],"detail":{"ticket_event":{"type":["Comment Created"],"comment":{"is_public":[false],"author":{"is_staff":[true]},"body":{"prefix":["#translate"]}},"ticket":{"via":{"channel":["email","web"]}}}}}
-
-        PubNote:
+            EventBusName: !Ref EventBusName
+            Pattern:
+              account:
+              - !Sub '${AWS::AccountId}'
+              detail-type:
+              - "Support Ticket: Comment Created"
+              detail:
+                ticket_event:
+                  type:
+                  - "Comment Created"
+                  comment:
+                    body:
+                    - "prefix": "#translate"
+                    is_public:
+                    - false
+                    author:
+                      is_staff:
+                      - true
+                  ticket:
+                    via:
+                      channel:
+                      - "email"
+                      - "web"
+        CustomerUpdate:
           Type: EventBridgeRule
           Properties:
-            EventBusName: !GetAtt ZendeskEventBus.Name
-            Pattern: {"detail-type":["Support Ticket: Comment Created"],"detail":{"ticket_event":{"type":["Comment Created"],"comment":{"is_public":[true],"author":{"is_staff":[false]}},"ticket":{"via":{"channel":["email","web"]}}}}}
-
+            EventBusName: !Ref EventBusName
+            Pattern:
+              account:
+              - !Sub '${AWS::AccountId}'
+              detail-type:
+              - "Support Ticket: Comment Created"
+              detail:
+                ticket_event:
+                  type:
+                  - "Comment Created"
+                  comment:
+                    is_public:
+                    - true
+                    author:
+                      is_staff:
+                      - false
+                  ticket:
+                    via:
+                      channel:
+                      - "email"
+                      - "web"
 
   ZendeskTranslatorLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
-      LogGroupName: !Sub /aws/lambda/eb-zendesk-trans-${Environment}
+      LogGroupName: !Sub /aws/lambda/eb-zendesk-translate-${Environment}
       RetentionInDays: 5
 
 
@@ -99,6 +137,6 @@ Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  EBZendeskTrans:
+  EBZendeskTranslate:
     Description: "Zendesk Translator lambda ARN"
-    Value: !GetAtt EBZendeskTrans.Arn
+    Value: !GetAtt EBZendeskTranslate.Arn
