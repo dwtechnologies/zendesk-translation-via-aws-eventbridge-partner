@@ -6,10 +6,11 @@
   <h3 align="center"><a href="https://medium.com/daniel-wellington-tech-stories"><img src="https://img.shields.io/badge/medium-%2312100E.svg?&style=for-the-badge&logo=medium&logoColor=white" height=25></a> </h3>
 
 <p align="center">
-    This is a aws serverless solution to get translation for none english tickets in zendesk, both incoming and outgoing. If the language is detected wrong, the agent can easily change the language for the case inside of zendesk.
+    This is a aws serverless solution to get translation for none english tickets in zendesk, both incoming and outgoing. If the language is detected wrong, the agent can easily change the language for the ticket inside of zendesk.
 
     <br />
     <br />
+    
     What is the difference between this project and the other ones out there including the one AWS have a released? This is one is more complete and is built based on the actuall need from customer service agents (staff) as this replaced a (expensive) third party app. This was completed in april where most of other contributions was released (but not same features) but we decided to release it now after 6+ months in production. The following features was built to address the change (and a huge cost saving):
   * First message is detecting the language and sets a custom field in zendesk so it is easy to change the language for the agents.
   * The reply from the staff in a internal note starting with #translate <response> is put as a public reply to the customer with the staff name.
@@ -19,7 +20,7 @@
     Beside a huge cost saving for this simple function we also started to opt-in all tickets to be translated instead of choosing manually. With this, we also saved ~45s per ticket update. This include to click on a translate button and come back to the ticket at a later stage as it was not instant and the same step was needed for the staff response and to copy over the response as a public comment.
     <br />
     <br />
-        <img src="images/zendesk-translation-eventbridge-partner-diagram.png" alt="The architecture diagram of zendesk translation using eventbridge zendesk partner integration">
+        <h3 align="center"><img src="images/zendesk-translation-eventbridge-partner-diagram.png" alt="The architecture diagram of zendesk translation using eventbridge zendesk partner integration" width="60%" height="60%"></h3>
     <br />
     <br />
 </p>
