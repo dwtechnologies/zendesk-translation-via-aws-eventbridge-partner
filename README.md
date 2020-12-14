@@ -135,7 +135,7 @@ Any contributions you make are **greatly appreciated** but please have in mind t
 
 
 ### Pull request wishlist
-* TODO
+* Convert to sam cli build that makes more sense for the public
 
 ## License
 
