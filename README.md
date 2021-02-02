@@ -5,7 +5,6 @@
   <h3 align="center">Enable the power of AWS translation for zendesk tickets</h3>
   <h3 align="center"><a href="https://medium.com/daniel-wellington-tech-stories"><img src="https://img.shields.io/badge/medium-%2312100E.svg?&style=for-the-badge&logo=medium&logoColor=white" height=25></a> </h3>
 
-<p align="center">
     This is a aws serverless solution to get translation for none english tickets in zendesk, both incoming and outgoing. If the language is detected wrong, the agent can easily change the language for the ticket inside of zendesk.
 
     <br />
@@ -17,13 +16,13 @@
   * If an attachment is also part of the internal note (eg return instructions) it will be part of the public reply response.
     <br />
     <br />
-    Beside a huge cost saving for this simple function we also started to opt-in all tickets to be translated instead of choosing manually. With this, we also saved ~45s per ticket update. This include to click on a translate button and come back to the ticket at a later stage as it was not instant and the same step was needed for the staff response and to copy over the response as a public comment.
+    Beside a huge cost saving, in our case 99.97% in running cost (OPEX), we also saved agent time (~45s per ticket update) because it was fully automated. The old solution requierd the agents to request translation both for incoming and outgoing updates, the current solution have the translation ready before the agents enters the case and also updates the ticket after translation is done with the agent name. We could also ignore the OPEX cost for the this solution, you may ask your self why? The cost is now the same as the daily leasing ratefor our seven coffee machines in our HQ in Stockholm, Sweden. You may now think, what about development/initial cost (CAPEX)? The savings covered them the first 4-6 weeks and roughly took one more in man power to build where most of the time was to lear eventbridge (well invested!).
+
     <br />
     <br />
         <h3 align="center"><img src="images/zendesk-translation-eventbridge-partner-diagram.png" alt="The architecture diagram of zendesk translation using eventbridge zendesk partner integration" width="60%" height="60%"></h3>
     <br />
     <br />
-</p>
 
 
 ## Table of Contents
@@ -42,11 +41,6 @@
 
 
 ## About The Project
-
-
-<!-- medium article [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
-
-
 
 ### Built With
 
@@ -69,7 +63,7 @@ The following needs to be on your machine to be able to deploy
 * cat
 * aws-cli
 #### Soft requierments
-If you don't find the settings for eventbridge on zendesk side for steps bellow, it means you don't have the "api package" (they basically bill you for not needing to setup webhooks). We got our setup deleted from no where by zendesk when they decided this without informing us. On the good side of that, we have built a alternative solution that is based on webhooks that put's the messages on a custom eventbridge so we don't need to pay for such subscription.
+If you don't find the settings for eventbridge on zendesk side for steps bellow, it means you don't have the "api package" (they basically bill you for not needing to setup webhooks). We got our setup deleted (we participated in the beta) from no where by zendesk when they decided to charge for that function without informing us. On the good side of that, we have built a alternative solution that is based on webhooks that put's the messages on a custom eventbridge so we don't need to pay for such subscription and we migrated to that after isch 6-7 months. The fork can be found [here](https://github.com/dwtechnologies/zendesk-translation-via-aws-eventbridge-apigateway-webhook)
 ### Setup zendesk as a eventbridge partner
 Sadly, this is manually as the setup needs to be done on the zendesk side. You will need to start with this as you need the name of the partner eventbus, after the setup you will find it in Amazon EventBridge => Events => Partner event sources. Edit your parameters-{dev/prod}.env file and add it to EventBusName= <br />
 ### Setup zendesk api key
@@ -111,16 +105,7 @@ make
 ```
 
 ### Testing
-
-Lambda events
-
-customer
-
-Eventbridge logg-all
-## Usage
-
-X
-
+I recommend to manually create a "catch all" / wildcard  eventbus rule to save the data to cloudwatch in the beginning to debug the communication going on the bus. To test the lambda, use the json files and adjust them to your needs  to test the lambda if you suspect that the lambda is not working as expected.
 
 
 ## Contributing
