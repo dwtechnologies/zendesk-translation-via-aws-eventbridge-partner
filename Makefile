@@ -30,6 +30,7 @@ sam_deploy = aws --profile $(AWS_PROFILE) cloudformation deploy \
                 --no-fail-on-empty-changeset 
 
 deploy:
+	cd lambda && npm install
 	$(call sam_package)
 	$(call sam_deploy)
 	@rm -rf out.yaml
