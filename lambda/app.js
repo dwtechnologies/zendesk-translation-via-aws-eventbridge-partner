@@ -64,7 +64,7 @@ const TRANSLATE_CMD_MARK = '#translate';
  * https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html
  */
 exports.lambdaHandler = async (event, context, callback) => {
-    let response;
+    //let response;
     try {
         console.debug('version', 15);
         console.debug('event', event);
@@ -382,7 +382,7 @@ async function getTicketLangCode(ticketEvent, zendeskToken) {
     console.debug('custom_fields', custom_fields,
         config.ZENDESK.TICKET_LANG_FIELD_ID);
     if (custom_fields) {
-        let langTicket;
+        //let langTicket;
         for (let i = 0; i < custom_fields.length; i++) {
             console.debug('finding custom field', custom_fields[i].id);
             if (custom_fields[i].id == config.ZENDESK.TICKET_LANG_FIELD_ID) {
