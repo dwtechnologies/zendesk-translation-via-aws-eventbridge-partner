@@ -64,7 +64,12 @@ The following needs to be on your machine to be able to deploy
 * cat
 * aws-cli
 #### Soft requierments
-If you don't find the settings for eventbridge on zendesk side for steps bellow, it means you don't have the "api package" (they basically bill you for not needing to setup webhooks). We got our setup deleted (we participated in the beta) from no where by zendesk when they decided to charge for that function without informing us. On the good side of that, we have built a alternative solution that is based on webhooks that put's the messages on a custom eventbridge so we don't need to pay for such subscription and we migrated to that after isch 6-7 months. The fork can be found [here](https://github.com/dwtechnologies/zendesk-translation-via-aws-eventbridge-apigateway-webhook)
+If you don't find the settings for eventbridge on zendesk side for steps bellow, it means you don't have the "api package" (they basically bill you for not needing to setup webhooks). We got our setup deleted (we participated in the beta) in production from no where by zendesk when they informed us after we escalated the support ticket to our account manager.
+<br />
+We started to build
+for that function without informing us. On the good side of that, we have built a alternative solution that is based on the zendesk webhooks and api gateway + lambda for basic auth.
+<br /> 
+We moved instead to the alternative solution due to that after 6-7 months and its based on the similar stack with eventbridge but instead of using the partner integration, we utilized the zendesk webhook that is free and ingest it with the same format to api gateway with a lambda authorizer to get basic authentication protection. The API gateway will after a successful authorization put's the messages to eventbridge. The fork will come soon and will be found [here](https://github.com/dwtechnologies/zendesk-translation-via-aws-eventbridge-apigateway-webhook) but right now its private until we fixed the code and documentation.
 ### Setup zendesk as a eventbridge partner
 Sadly, this is manually as the setup needs to be done on the zendesk side. You will need to start with this as you need the name of the partner eventbus, after the setup you will find it in Amazon EventBridge => Events => Partner event sources. Edit your parameters-{dev/prod}.env file and add it to EventBusName= <br />
 ### Setup zendesk api key
