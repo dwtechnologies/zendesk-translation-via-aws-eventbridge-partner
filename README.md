@@ -1,6 +1,6 @@
 # zendesk-translation-via-aws-eventbridge-partner
  <h3 align="center">Enable the power of AWS translation for zendesk tickets</h3>
- <h3 align="center"><a href="https://medium.com/daniel-wellington-tech-stories"><img src="https://img.shields.io/badge/medium-%2312100E.svg?&style=for-the-badge&logo=medium&logoColor=white" height=25></a></h3>
+ <h3 align="center"><a href="https://medium.com/daniel-wellington-tech-stories"><img src="https://img.shields.io/badge/medium-%2312100E.svg?&style=for-the-badge&logo=medium&logoColor=white" height=25></a><br /><a href="https://dev.to/dwtech"><img src="https://d2fltix0v2e0sb.cloudfront.net/dev-badge.svg" alt="Daniel wellington technology's DEV Community Profile" height="30" width="30"></a></h3>
 
 This is a aws serverless solution to get translation for none english tickets in zendesk, both incoming and outgoing. If the language is detected wrong, the agent can easily change the language for the ticket inside of zendesk. <br /> <br />
     
