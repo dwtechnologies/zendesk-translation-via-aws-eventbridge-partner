@@ -11,7 +11,7 @@ What is the difference between this project and the other ones out there includi
  
 With the solution we build, we managed to save 99.97% in running cost (OPEX), we also saved agent time (~45s per ticket update) because the translation was  automated. The old solution requierd the agents to request translation both for incoming and outgoing updates, while this solution already have the translation ready before the agents enters the case and also updates the ticket after translation is done. <br />
  
-We could also ignore the OPEX cost for the this solution, you may ask your self why? The cost is now the same as the daily leasing ratefor our seven coffee machines in our HQ in Stockholm, Sweden. You may now think, what about development/initial cost (CAPEX)? The savings covered them the first 4-6 weeks and roughly took one more in man power to build where most of the time was to lear eventbridge (well invested!). <br /> <br />
+We could also ignore the OPEX cost for the this solution, you may ask your self why? The cost is now the same as the daily leasing ratefor our seven coffee machines in our HQ in Stockholm, Sweden. You may now think, what about development/initial cost (CAPEX)? The savings covered them the first six weeks.<br /> <br />
 
 ## Table of Contents
 * [About the Project](#about-the-project)
