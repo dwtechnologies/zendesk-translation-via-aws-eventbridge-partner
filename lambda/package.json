@@ -1,11 +1,11 @@
 {
   "name": "zendesk_translator",
   "version": "1.0.0",
-  "description": "Zendesk Translator Lambda",
+  "description": "Zendesk translation via aws eventbridge partner",
   "main": "index.js",
-  "author": "Roman Domrachev",
+  "author": "Roman",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "is-english": "1.3.0"
   },
   "devDependencies": {
